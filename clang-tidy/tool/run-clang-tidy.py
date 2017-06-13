@@ -108,19 +108,21 @@ def apply_fixes(args, tmpdir):
   if args.style:
     invocation.append('-style=' + args.style)
   invocation.append(tmpdir)
+  sys.stdout.write(' '.join(invocation) + '\n')
   subprocess.call(invocation)
 
 
 def run_tidy(args, tmpdir, build_path, queue):
   """Takes filenames out of queue and runs clang-tidy on them."""
   while True:
-    name = queue.get()
+    entry = queue.get()
+    name = entry['file']
     invocation = get_tidy_invocation(name, args.clang_tidy_binary, args.checks,
                                      tmpdir, build_path, args.header_filter,
                                      args.extra_arg, args.extra_arg_before,
                                      args.quiet)
-    sys.stdout.write(' '.join(invocation) + '\n')
-    subprocess.call(invocation)
+    tidy = subprocess.Popen(invocation, cwd=entry['directory'])
+    tidy.wait()
     queue.task_done()
 
 
@@ -211,9 +213,10 @@ def main():
       t.start()
 
     # Fill the queue with files.
-    for name in files:
+    for entry in database:
+      name = entry['file']
       if file_name_re.search(name):
-        queue.put(name)
+        queue.put(entry)
 
     # Wait for all threads to be done.
     queue.join()
