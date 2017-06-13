@@ -497,6 +497,11 @@ extern volatile int ModernizeModuleAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED ModernizeModuleAnchorDestination =
     ModernizeModuleAnchorSource;
 
+// This anchor is used to force the linker to link the ModernizeModule.
+extern volatile int QemuModuleAnchorSource;
+static int LLVM_ATTRIBUTE_UNUSED QemuModuleAnchorDestination =
+    QemuModuleAnchorSource;
+
 // This anchor is used to force the linker to link the MPIModule.
 extern volatile int MPIModuleAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED MPIModuleAnchorDestination =

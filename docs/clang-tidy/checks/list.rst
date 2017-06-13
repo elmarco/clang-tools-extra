@@ -156,6 +156,9 @@ Clang-Tidy Checks
    performance-type-promotion-in-math-fn
    performance-unnecessary-copy-initialization
    performance-unnecessary-value-param
+   qemu-round
+   qemu-use-bool-literals
+   qemu-use-gnew
    readability-avoid-const-params-in-decls
    readability-braces-around-statements
    readability-container-size-empty
